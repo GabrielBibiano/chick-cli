@@ -1,29 +1,37 @@
 #! /usr/bin/env node
-const fs = require('fs');
-const config = require('./config');
+const { 
+    config, 
+    createNewModule, 
+    viewConfig 
+} = require('./core');
 
 const cliArguments = process.argv.splice(2, process.argv.length -1)
 
 // iniciar <nome do novo modulo>
 // criar <outro argumento == rota, template >
+const allCommands = ["iniciar", "criar", "status"]
+allCommands["criar"] = ["rota", "template", "sub-modulo"]
 
-const allCommands = ["iniciar", "criar"]
-allCommands["criar"] = ["rota", "template"]
+const verifyArguments = (arguments) => {
+    const [firstArgument, secondArgument] = arguments;
 
-const verifyFirstArgument = (firstArgument, secondArgument) => {
     if(firstArgument == "iniciar"){
-        console.log(config(secondArgument))
+        const configModule = config(secondArgument)
+        createNewModule(configModule)
     }else if(firstArgument == "criar"){
         createNew(secondArgument) 
+    }else if(firstArgument == "status"){
+        viewConfig()
     }
 }
 
-createNew = (arg) => {
+const createNew = (arg) => {
     const createCommands = Array.from(allCommands.criar);
+
     createCommands.includes(arg) ? 
-        console.log("Criado: " + arg)
+        console.log(`Criado: ${arg}`)
     :
         console.log("Digite um comando suportado")
 }
 
-verifyFirstArgument(cliArguments[0], cliArguments[1])
+verifyArguments(cliArguments)  

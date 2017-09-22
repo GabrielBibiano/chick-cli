@@ -49,7 +49,6 @@ exports.displayHelpers = (command = null) => {
       $ tiju criar sub-modulo motoristas crud
         `;
     }
-
    
     console.log(helpers)
 }
@@ -72,9 +71,10 @@ exports.createNewModule = (configModule) => {
             
             throw err;            
         }
+        
         console.log("Diretório criado!");
 
-        createAssets(configModule.nome)
+        createAssetsByFather(configModule.nome)
     });
 
     fs.writeFile(`${configModule.nome}/tijucli-module.json`, JSON.stringify(configModule), (err) => {
@@ -84,7 +84,7 @@ exports.createNewModule = (configModule) => {
     });
 }
 
-const createAssets = (fatherDir) => {
+const createAssetsByFather = (fatherDir) => {
     fs.mkdir(`${fatherDir}/assets`, (err) => {
         if (err) throw err;
         

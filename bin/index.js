@@ -11,7 +11,7 @@ const cliArguments = process.argv.splice(2, process.argv.length -1)
 // iniciar <nome do novo modulo>
 // criar <outro argumento == rota, template, sub-modulo>
 const allCommands = ["iniciar", "criar", "status"]
-allCommands["criar"] = ["rota", "template", "sub-modulo"]
+allCommands["criar"] = ["template", "sub-modulo"]
 
 const verifyArguments = (arguments) => {
     const [firstArgument, secondArgument] = arguments;

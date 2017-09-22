@@ -2,26 +2,31 @@
 const { 
     config, 
     createNewModule, 
-    viewConfig 
+    displayConfig,
+    displayHelpers
 } = require('./core');
 
 const cliArguments = process.argv.splice(2, process.argv.length -1)
 
 // iniciar <nome do novo modulo>
-// criar <outro argumento == rota, template >
+// criar <outro argumento == rota, template, sub-modulo>
 const allCommands = ["iniciar", "criar", "status"]
 allCommands["criar"] = ["rota", "template", "sub-modulo"]
 
 const verifyArguments = (arguments) => {
     const [firstArgument, secondArgument] = arguments;
 
-    if(firstArgument == "iniciar"){
+    if (arguments.length == 0) {
+        displayHelpers()
+    } else if (firstArgument == "iniciar") {
         const configModule = config(secondArgument)
         createNewModule(configModule)
-    }else if(firstArgument == "criar"){
+    } else if (firstArgument == "criar") {
         createNew(secondArgument) 
-    }else if(firstArgument == "status"){
-        viewConfig()
+    } else if (firstArgument == "status") {
+        displayConfig()
+    } else if (firstArgument == "ajuda") {
+        displayHelpers(secondArgument)
     }
 }
 

@@ -1,11 +1,6 @@
 #! /usr/bin/env node
-const { 
-    config, 
-    createNew,
-    createNewModule, 
-    displayConfig,
-    displayHelpers
-} = require('../src/core');
+const { config, createNew, createNewModule} = require('../src/core');
+const { displayConfig, displayHelpers } = require('../src/displays');
 
 const cliArguments = process.argv.splice(2, process.argv.length -1)
 

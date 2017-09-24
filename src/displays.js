@@ -1,3 +1,4 @@
+const fs = require('fs')
 const {comment, bgWhite} = require('./colorsVariables')
 
 exports.displayHelpers = (command = null) => {

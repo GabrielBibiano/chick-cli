@@ -5,7 +5,7 @@ const {
     createNewModule, 
     displayConfig,
     displayHelpers
-} = require('./core');
+} = require('../src/core');
 
 const cliArguments = process.argv.splice(2, process.argv.length -1)
 

@@ -1,5 +1,5 @@
 #! /usr/bin/env node
-const { config, createNew, createNewModule} = require('../src/core');
+const { configModule, createNew, createNewModule} = require('../src/core');
 const { displayConfig, displayHelpers } = require('../src/displays');
 
 const cliArguments = process.argv.splice(2, process.argv.length -1)
@@ -10,8 +10,8 @@ const verifyArguments = (arguments) => {
     if (arguments.length == 0) {
         displayHelpers()
     } else if (firstArgument == "iniciar") {
-        const configModule = config(secondArgument)
-        createNewModule(configModule)
+        const config = configModule(secondArgument)
+        createNewModule(config)
     } else if (firstArgument == "criar") {
         createNew(secondArgument, thirdArgument, fourthArgument) 
     } else if (firstArgument == "status") {

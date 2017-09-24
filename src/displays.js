@@ -67,6 +67,7 @@ exports.displayConfig = () => {
             Nome: ${data.nome}
             Inicio: ${data.inicio}
             `)
+
         });
     });
 }

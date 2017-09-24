@@ -1,10 +1,11 @@
 const fs = require('fs')
+const { createAllDefaultAssets } = require('./assets')
 const {comment, bgWhite} = require('./colorsVariables')
 
 const allCommands = ["iniciar", "criar", "status"]
 allCommands["criar"] = ["template", "sub-modulo"]
 
-exports.config = (projectName) => {
+exports.configModule = (projectName) => {
     const configModule = {
         nome: projectName,
         inicio: Date()
@@ -13,7 +14,7 @@ exports.config = (projectName) => {
     return configModule;
 }
 
-const createConfigFile = (configModule) => {
+const createConfigModuleFile = (configModule) => {
     fs.writeFile(`${configModule.nome}/tijucli-module.json`, JSON.stringify(configModule), (err) => {
         if (err) throw err;
         console.log('Módulo criado e configurações salvas!');
@@ -47,43 +48,11 @@ exports.createNewModule = (configModule) => {
 
         console.log("Diretório criado!");
 
-        createAssetsByFather(configModule.nome)
-        createViewsDirByFather(configModule.nome)
+        createAllDefaultAssets(configModule.nome)
     });
 
     setTimeout(() => {
-        createConfigFile(configModule)
-    }, 1000)
-}
-
-const createAssetsByFather = (fatherDir) => {
-    fs.mkdir(`${fatherDir}/assets`, (err) => {
-
-        if (err) throw err;
-        console.log("Pasta assets criada!");
-
-        fs.mkdir(`${fatherDir}/assets/css`, (err) => {
-            if (err) throw err;
-            console.log("Pasta css criada!");
-        });
-        
-        fs.mkdir(`${fatherDir}/assets/js`, (err) => {
-            if (err) throw err;
-            console.log("Pasta js criada!");
-        });
-
-    });
-
-    setTimeout(() => {
-        fs.writeFile(`${fatherDir}/assets/js/${fatherDir}.js`, "", (err) => {
-            if (err) throw err;
-            console.log("Arquivo js do módulo criado!");
-        });
-
-        fs.writeFile(`${fatherDir}/assets/css/${fatherDir}.css`, "", (err) => {
-            if (err) throw err;
-            console.log("Arquivo css do módulo criado!");
-        });
+        createConfigModuleFile(configModule)
     }, 1000)
 }
 

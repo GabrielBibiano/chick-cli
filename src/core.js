@@ -1,17 +1,15 @@
 const fs = require('fs')
 const { createAllDefaultAssets } = require('./assets')
-const {comment, bgWhite} = require('./colorsVariables')
+const { comment, bgWhite } = require('./colorsVariables')
 
 const allCommands = ["iniciar", "criar", "status"]
 allCommands["criar"] = ["template", "sub-modulo"]
 
 exports.configModule = (projectName) => {
-    const configModule = {
+    return configModule = {
         nome: projectName,
         inicio: Date()
     }
-
-    return configModule;
 }
 
 const createConfigModuleFile = (configModule) => {
@@ -47,7 +45,6 @@ exports.createNewModule = (configModule) => {
         }
 
         console.log("Diretório criado!");
-
         createAllDefaultAssets(configModule.nome)
     });
 

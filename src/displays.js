@@ -1,5 +1,5 @@
 const fs = require('fs')
-const {comment, bgWhite} = require('./colorsVariables')
+const { comment, bgWhite } = require('./colorsVariables')
 
 exports.displayHelpers = (command = null) => {
     let helpers;

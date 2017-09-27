@@ -1,6 +1,12 @@
 # The Chick :hatching_chick: - (under development)
 CLI to create and configure modules to ERP - Tijuca Alimentos
 
+## Installation
+
+```sh
+$ npm install -g chick-cli
+```
+
 ## Binary
 ```sh
 $ tiju

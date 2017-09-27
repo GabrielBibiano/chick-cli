@@ -10,7 +10,8 @@
   "author": "",
   "license": "ISC",
   "bin": {
-    "tiju": "./bin/index.js"
+    "tiju": "./bin/index.js",
+    "chick": "./bin/index.js"
   },
   "dependencies": {
     "chalk": "^2.1.0"

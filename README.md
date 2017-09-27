@@ -1,10 +1,16 @@
-# tiju-cli
+# The Chick :hatching_chick:
 CLI to create and configure modules to ERP - Tijuca Alimentos
 
 ## Binary
 ```sh
 $ tiju
 ```
+or
+
+```sh
+$ chick
+```
+
 
 ## List of commands
 

@@ -41,7 +41,7 @@ exports.createAllDefaultAssets = async (fatherDir) => {
         await createAssetsDirByFather(fatherDir);
         await createJsDir(fatherDir);
         await createCssDir(fatherDir);
-        await createDefaultAssetsFiles(fatherDir)
+        await createDefaultAssetsFiles(fatherDir);
         console.log('Assets criados!')
     } catch (error) {
         console.log(error)

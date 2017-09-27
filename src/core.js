@@ -1,4 +1,5 @@
 const fs = require('fs')
+const { createNewTemplate } = require('./templates')
 const { createAllDefaultAssets } = require('./assets')
 const { comment, bgWhite } = require('./colorsVariables')
 
@@ -27,15 +28,15 @@ exports.createNew = (...args) => {
         if(itemToCreate == 'sub-modulo'){
             createNewSubModule(name, type)
         }else if(itemToCreate == 'template'){
-            createNewViewByFather(name, type)
+            createNewTemplate(name, type)
         }
     }else{
         console.log("Digite um comando suportado")
     }
 }
 
-exports.createNewModule = (configModule) => {
-    fs.mkdir(configModule.nome, (err) => {
+exports.createNewModule = async (configModule) => {
+    await fs.mkdir(configModule.nome, (err) => {
         if (err) {
             if (err.code == "EEXIST") {
                 console.log("Este módulo já foi criado. \n")
@@ -45,12 +46,11 @@ exports.createNewModule = (configModule) => {
         }
 
         console.log("Diretório criado!");
-        createAllDefaultAssets(configModule.nome)
     });
-
-    setTimeout(() => {
-        createConfigModuleFile(configModule)
-    }, 1000)
+    
+    createConfigModuleFile(configModule)
+    createAllDefaultAssets(configModule.nome)
+    createViewsDirByFather(configModule.nome)
 }
 
 const createViewsDirByFather = (fatherDir) => {
@@ -62,14 +62,6 @@ const createViewsDirByFather = (fatherDir) => {
             if (err) throw err;
         });
     });
-}
-
-const createNewViewByFather = (nameFile, typeOfTemplate) => {
-    fs.writeFile(`views/${nameFile}.html`, typeOfTemplate , (err) => {
-        if (err) throw err;
-    });
-
-    console.log('Novo arquivo de template criado!')
 }
 
 const createNewSubModule = (...moduleAttributes) => {

@@ -10,8 +10,7 @@ const verifyArguments = (arguments) => {
     if (arguments.length == 0) {
         displayHelpers()
     } else if (firstArgument == "iniciar") {
-        const config = configModule(secondArgument)
-        createNewModule(config)
+        createNewModule(configModule(secondArgument))
     } else if (firstArgument == "criar") {
         createNew(secondArgument, thirdArgument, fourthArgument) 
     } else if (firstArgument == "status") {

@@ -1,14 +1,15 @@
 {
   "name": "tiju-cli",
   "version": "1.0.0",
-  "description": "",
+  "description": "CLI to create and configure modules to ERP - Tijuca Alimentos",
   "main": "index.js",
   "scripts": {
     "test": ""
   },
   "keywords": [],
-  "author": "",
+  "author": "Gabrel Bibiano <gabriel.bibiano.a@gmail.com>",
   "license": "ISC",
+  "preferGlobal": true,
   "bin": {
     "tiju": "./bin/index.js",
     "chick": "./bin/index.js"

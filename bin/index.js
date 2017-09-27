@@ -20,4 +20,4 @@ const verifyArguments = (arguments) => {
     }
 }
 
-verifyArguments(cliArguments)  
+verifyArguments(cliArguments)

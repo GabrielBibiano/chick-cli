@@ -49,7 +49,7 @@ exports.displayHelpers = (command = null) => {
 }
 
 exports.displayConfig = () => {
-    fs.open('tijucli-module.json', 'r', (err, fd) => {
+    fs.open('tijucli-module.json', 'r', (err) => {
         if (err) {
             if (err.code === 'ENOENT') {
                 console.error("O aquivo de configuração não existe.");

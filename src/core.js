@@ -1,4 +1,5 @@
 const fs = require('fs')
+const { createConfigModuleFile } = require('./config')
 const { createNewTemplate } = require('./templates')
 const { createAllDefaultAssets } = require('./assets')
 const { comment, bgWhite } = require('./colorsVariables')
@@ -11,13 +12,6 @@ exports.configModule = (projectName) => {
         nome: projectName,
         inicio: Date()
     }
-}
-
-const createConfigModuleFile = (configModule) => {
-    fs.writeFile(`${configModule.nome}/tijucli-module.json`, JSON.stringify(configModule), (err) => {
-        if (err) throw err;
-        console.log('Módulo criado e configurações salvas!');
-    });
 }
 
 exports.createNew = (...args) => {

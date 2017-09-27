@@ -1,4 +1,4 @@
-# The Chick :hatching_chick: (under development)
+# The Chick :hatching_chick: - (under development)
 CLI to create and configure modules to ERP - Tijuca Alimentos
 
 ## Binary

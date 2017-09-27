@@ -1,6 +1,6 @@
 {
   "name": "chick-cli",
-  "version": "0.1.0",
+  "version": "0.0.1",
   "description": "CLI to create and configure modules to ERP - Tijuca Alimentos",
   "main": "index.js",
   "scripts": {

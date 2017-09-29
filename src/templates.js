@@ -1,5 +1,5 @@
 const fs = require('fs')
-const { verifyConfigFile } = require('./config')
+const { verifyConfigFile } = require('./configModule')
 const { ifNotExists } = require('./generic')
 const { bgWhite } = require('./colorsVariables')
 

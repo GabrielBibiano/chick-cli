@@ -1,18 +1,11 @@
 const fs = require('fs')
-const { createConfigModuleFile } = require('./config')
+const { createConfigModuleFile } = require('./configModule')
 const { createNewTemplate } = require('./templates')
 const { createAllDefaultAssets } = require('./assets')
-const { comment, bgWhite } = require('./colorsVariables')
+const { comment, black, bgWhite, bgRed, bgGreen } = require('./colorsVariables')
 
 const allCommands = ["iniciar", "criar", "status"]
 allCommands["criar"] = ["template", "sub-modulo"]
-
-exports.configModule = (projectName) => {
-    return configModule = {
-        nome: projectName,
-        inicio: Date()
-    }
-}
 
 exports.createNew = (...args) => {
     const createCommands = Array.from(allCommands.criar);
@@ -29,33 +22,120 @@ exports.createNew = (...args) => {
     }
 }
 
-exports.createNewModule = async (configModule) => {
-    await fs.mkdir(configModule.nome, (err) => {
-        if (err) {
-            if (err.code == "EEXIST") {
-                console.log("Este módulo já foi criado. \n")
-            }
-            
-            throw err;            
-        }
-
-        console.log("Diretório criado!");
-    });
-    
-    createConfigModuleFile(configModule)
-    createAllDefaultAssets(configModule.nome)
-    createViewsDirByFather(configModule.nome)
+exports.createNewModule = (configModule) => {
+    createModuleDir().then((result) => {
+        createConfigModuleFile(configModule)
+        createViews(configModule.nome)
+        createModels(configModule.nome),
+        createControllers(configModule.nome),
+        console.log(bgGreen(black('Show!')), result);
+    }).catch(error => {
+        console.log(bgRed('Ops!'), error)
+    })
 }
 
-const createViewsDirByFather = (fatherDir) => {
-    fs.mkdir(`${fatherDir}/views`, (err) => {
-        if (err) throw err;
-        console.log("Pasta views criada!");
+const createModuleDir = () =>{
+    return new Promise((resolve, reject) => {
+        fs.mkdir(configModule.nome, (err) => {
+            if (err) {
+                if (err.code == "EEXIST") {
+                    reject("Este módulo já existe.")
+                }
+            }else{
+                resolve("Módulo criado!");
+            }
+        });
+    })
+}
 
+const createViews = async (fatherDir) => {
+    return Promise.all([
+        createViewsDir(fatherDir),
+        createDefaultViewFile(fatherDir),
+        createAllDefaultAssets(fatherDir),
+    ]).then(result => {
+        for(let i = 0; i < result.length; i++){
+            console.log(bgGreen(black('Show!')), result[i]);
+        }
+    }).catch((error) => {
+        console.log(bgRed('Ops!'), error)
+    })
+}
+
+const createViewsDir = (fatherDir) => {
+    return new Promise((resolve, reject) => {
+        fs.mkdir(`${fatherDir}/views`, (err) => {
+            if (err){
+                reject(err)
+            }else{
+                resolve("Pasta views criada!")
+            }
+        });
+    })
+}
+
+const createDefaultViewFile = (fatherDir) => {
+    return new Promise((resolve, reject) => {
         fs.writeFile(`${fatherDir}/views/${fatherDir}.html`, "" , (err) => {
-            if (err) throw err;
+            if (err) reject(err)
+            else resolve("Arquivo view padrão do módulo criado!")
         });
     });
+}
+
+const createControllersDir = (fatherDir) => {
+    return new Promise((resolve, reject) => {
+        fs.mkdir(`${fatherDir}/controllers`, (err) => {
+            if (err){
+                reject(err)
+            }else{
+                resolve("Pasta controllers criada!");
+            }
+        });
+    })
+}
+
+const createAjaxDir = (fatherDir) => {
+    return new Promise((resolve, reject) => {
+        fs.mkdir(`${fatherDir}/controllers/ajax`, (err) => {
+            if (err){
+                reject(err)
+            }else{
+                resolve();
+            }
+        });
+    })
+}
+
+const createModels = (fatherDir) => {
+    createModelsDir(fatherDir).then(response => {
+        console.log(bgGreen(black('Show!')), response)
+    })
+    .catch((error) => { 
+        console.log(bgRed('Ops!'), error)
+    })
+}
+
+const createControllers = (fatherDir) => {
+    createControllersDir(fatherDir).then(response => {
+        createAjaxDir(fatherDir).catch(err => err)
+        console.log(bgGreen(black('Show!')), response)
+    })
+    .catch((error) => { 
+        console.log(bgRed('Ops!'), error)
+    })
+}
+
+const createModelsDir = (fatherDir) => {
+    return new Promise((resolve, reject) => {
+        fs.mkdir(`${fatherDir}/models`, (err) => {
+            if (err){
+                reject(err)
+            }else{
+                resolve("Pasta models criada!");
+            }
+        });
+    })
 }
 
 const createNewSubModule = (...moduleAttributes) => {
@@ -80,6 +160,6 @@ const createNewSubModule = (...moduleAttributes) => {
             }
         }
 
-        console.log("Sub módulo criado!");
+        console.log(bgGreen(black('Show!')), "Sub módulo criado!");
     });
 }

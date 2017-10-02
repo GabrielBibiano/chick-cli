@@ -1,11 +1,14 @@
 const fs = require('fs')
+const { logSuccess, logError } = require('./generic')
 const { comment, black, bgWhite, bgRed, bgGreen } = require('./colorsVariables')
 
 exports.createConfigModuleFile = (configModule) => {
-    fs.writeFile(`${configModule.nome}/tijucli-module.json`, JSON.stringify(configModule), (err) => {
-        if (err) throw err;
-        console.log(bgGreen(black('Show!')), 'Configurações salvas!');
-    });
+    return new Promise((resolve, reject) => {
+        fs.writeFile(`${configModule.nome}/tijucli-module.json`, JSON.stringify(configModule), (err) => {
+            if (err) reject(logError(err));
+            resolve(logSuccess('Configurações salvas!'))
+        });
+    }) 
 }
 
 exports.verifyConfigFile = () => {

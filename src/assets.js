@@ -25,26 +25,34 @@ const createJsDir = (fatherDir) => {
     })
 }
 
-exports.createAllDefaultAssets = async (fatherDir) => {
-    return Promise.all([
-        createAssetsDirByFather(fatherDir),
-        createJsDir(fatherDir),
-        createCssDir(fatherDir),
-        new Promise((resolve, reject) => {
-            fs.writeFile(`${fatherDir}/views/assets/js/${fatherDir}.js`, "", (err) => {
-                if (err) reject(err)
-                else resolve("Arquivo js do módulo criado!")
-            })
-        }),
-        new Promise((resolve, reject) => {
-            fs.writeFile(`${fatherDir}/views/assets/css/${fatherDir}.css`, "", (err) => {
-                if (err) reject(err)
-                else resolve("Arquivo css do módulo criado!")
-            })
+const createJsDefaultFile = (fatherDir) => {
+    return new Promise((resolve, reject) => {
+        fs.writeFile(`${fatherDir}/views/assets/js/${fatherDir}.js`, "", (err) => {
+            if (err) reject(err)
+            else resolve("Arquivo js do módulo criado!")
         })
-    ]).then((result) => {
-        return 'Assets criados!'
-    }).catch((err) => {
-        return err[0]
+    })
+}
+
+const createCssDefaultFile = (fatherDir) => {
+    return new Promise((resolve, reject) => {
+        fs.writeFile(`${fatherDir}/views/assets/css/${fatherDir}.css`, "", (err) => {
+            if (err) reject(err)
+            else resolve("Arquivo css do módulo criado!")
+        })
+    })
+}
+
+exports.createAllDefaultAssets = (fatherDir) => {
+    return new Promise((resolve, reject) => {
+        createAssetsDirByFather(fatherDir).then(() => {
+            createJsDir(fatherDir).then(() => {
+                createJsDefaultFile(fatherDir)
+            }).catch((err) => reject(err))
+            createCssDir(fatherDir).then(() => {
+                createCssDefaultFile(fatherDir)
+            }).catch((err) => reject(err))
+            resolve('Assets criados!')
+        }).catch((err) => reject(err))
     })
 }

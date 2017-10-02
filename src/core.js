@@ -1,4 +1,5 @@
 const fs = require('fs')
+const { logSuccess, logError } = require('./generic')
 const { createConfigModuleFile } = require('./configModule')
 const { createNewTemplate } = require('./templates')
 const { createAllDefaultAssets } = require('./assets')
@@ -23,14 +24,14 @@ exports.createNew = (...args) => {
 }
 
 exports.createNewModule = (configModule) => {
-    createModuleDir().then((result) => {
-        createConfigModuleFile(configModule)
+    createModuleDir().then( async (result) => {
+        await createConfigModuleFile(configModule)
+        logSuccess(result)
         createViews(configModule.nome)
-        createModels(configModule.nome),
-        createControllers(configModule.nome),
-        console.log(bgGreen(black('Show!')), result);
+        createModels(configModule.nome)
+        createControllers(configModule.nome)
     }).catch(error => {
-        console.log(bgRed('Ops!'), error)
+        logError(error)
     })
 }
 
@@ -48,17 +49,20 @@ const createModuleDir = () =>{
     })
 }
 
-const createViews = async (fatherDir) => {
-    return Promise.all([
-        createViewsDir(fatherDir),
-        createDefaultViewFile(fatherDir),
-        createAllDefaultAssets(fatherDir),
-    ]).then(result => {
-        for(let i = 0; i < result.length; i++){
-            console.log(bgGreen(black('Show!')), result[i]);
-        }
+const createViews = (fatherDir) => {
+    createViewsDir(fatherDir).then( async response => {
+        logSuccess(response)
+        await createModalsDir(fatherDir)
+            .then(res => logSuccess(res))
+            .catch(error => logError(error))
+        createDefaultViewFile(fatherDir)
+            .then(res => logSuccess(res))
+            .catch(error => logError(error))
+        createAllDefaultAssets(fatherDir)
+            .then(res => logSuccess(res))
+            .catch(error => logError(error))
     }).catch((error) => {
-        console.log(bgRed('Ops!'), error)
+        logError(error)
     })
 }
 
@@ -69,6 +73,18 @@ const createViewsDir = (fatherDir) => {
                 reject(err)
             }else{
                 resolve("Pasta views criada!")
+            }
+        });
+    })
+}
+
+const createModalsDir = (fatherDir) => {
+    return new Promise((resolve, reject) => {
+        fs.mkdir(`${fatherDir}/views/modal`, (err) => {
+            if (err){
+                reject(err)
+            }else{
+                resolve("Pasta modal criada!")
             }
         });
     })
@@ -109,21 +125,19 @@ const createAjaxDir = (fatherDir) => {
 
 const createModels = (fatherDir) => {
     createModelsDir(fatherDir).then(response => {
-        console.log(bgGreen(black('Show!')), response)
+        logSuccess(response)
     })
     .catch((error) => { 
-        console.log(bgRed('Ops!'), error)
+        logError(error)
     })
 }
 
 const createControllers = (fatherDir) => {
     createControllersDir(fatherDir).then(response => {
         createAjaxDir(fatherDir).catch(err => err)
-        console.log(bgGreen(black('Show!')), response)
+        logSuccess(response)
     })
-    .catch((error) => { 
-        console.log(bgRed('Ops!'), error)
-    })
+    .catch(error => logError(error))
 }
 
 const createModelsDir = (fatherDir) => {
@@ -145,21 +159,21 @@ const createNewSubModule = (...moduleAttributes) => {
     fs.mkdir(subModuleName, (err) => {
         if (err) {
             if (err.code == "EEXIST") {
-                console.log("Este sub módulo já existe. \n")
+                logError("Este sub módulo já existe. \n")
             }
             
-            throw err;            
+            logError(err);            
         }
 
         if(subModuleType == 'crud'){
             for(let i = 0; filesCRUD.length > i; i++){
                 const fileName = `${subModuleName}/${subModuleName}${filesCRUD[i]}.php`;
                 fs.writeFile(fileName, filesCRUD[i] , (err) => {
-                    if (err) throw err;
+                    if (err) logError(err);
                 });
             }
         }
 
-        console.log(bgGreen(black('Show!')), "Sub módulo criado!");
+        logSuccess('Sub módulo criado!');
     });
 }

@@ -1,4 +1,5 @@
 const fs = require('fs')
+const { logSuccess, logError } = require('./generic')
 const { verifyConfigFile } = require('./configModule')
 const { ifNotExists } = require('./generic')
 const { bgWhite } = require('./colorsVariables')
@@ -24,12 +25,12 @@ exports.createNewTemplate = (name, type) => {
         ifNotExists(name, 'html').then(() => {
             fs.writeFile(`views/${name}.html`, template, (e) => {
                 if(e) throw e
-                console.log(`Arquivo ${bgWhite(name)} criado!`)
+                logSuccess(`Arquivo ${bgWhite(name)} criado!`)
             })
         }).catch((error) => {
-            console.log(`Já existe um template com o nome ${bgWhite(name)}!`)
+            logError(`Já existe um template com o nome ${bgWhite(name)}!`)
         })
     }).catch((err) => {
-        console.log('Error! Por favor, navegue até a raiz de um módulo válido.');
+        logError('Error! Por favor, navegue até a raiz de um módulo válido.')
     })
 }

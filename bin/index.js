@@ -1,4 +1,5 @@
 #! /usr/bin/env node
+const { defineRootErpToConfiguration } = require('../src/configRoot');
 const { createNew, createNewModule} = require('../src/core');
 const { configDataModule } = require('../src/configModule');
 const { displayConfig, displayHelpers } = require('../src/displays');
@@ -18,6 +19,8 @@ const verifyArguments = (arguments) => {
         displayConfig()
     } else if (firstArgument == "ajuda") {
         displayHelpers(secondArgument)
+    } else if (firstArgument == "usar") {
+        defineRootErpToConfiguration()
     }
 }
 

@@ -25,8 +25,8 @@ exports.createNew = (...args) => {
 
 exports.createNewModule = (configModule) => {
     createModuleDir().then( async (result) => {
-        await createConfigModuleFile(configModule)
         logSuccess(result)
+        await createConfigModuleFile(configModule)
         createViews(configModule.nome)
         createModels(configModule.nome)
         createControllers(configModule.nome)
@@ -35,7 +35,7 @@ exports.createNewModule = (configModule) => {
     })
 }
 
-const createModuleDir = () =>{
+const createModuleDir = () => {
     return new Promise((resolve, reject) => {
         fs.mkdir(configModule.nome, (err) => {
             if (err) {

@@ -56,6 +56,20 @@ const createConfigDirRoot = () => {
     })
 }
 
+const questionToCreateConfigDir = () => {
+    prompt("Deseja criar?(s/n) ", (res) => {
+        if(res == "s" || res == "S"){
+            createConfigDirRoot()
+            .then( logSuccess("Pasta de configuração criada!") )
+        }else if(res == "n" || res == "N"){
+            console.log("Pasta não criada!")
+        }else{
+            console.log("Resposta não esperada.")
+        }
+        process.exit();
+    })
+}
+
 exports.defineRootErpToConfiguration = () => {
     verifyConfigFile()
     .then(() => {
@@ -69,17 +83,7 @@ exports.defineRootErpToConfiguration = () => {
             verifyRootConfigDir()
             .then(() => {
                 console.log("\nEste projeto não contém a pasta de configuração necessária.")
-                prompt("Deseja criar?(s/n) ", (res) => {
-                    if(res == "s" || res == "S"){
-                        createConfigDirRoot()
-                        .then( logSuccess("Pasta de configuração criada!") )
-                    }else if(res == "n" || res == "N"){
-                        console.log("Pasta não criada!")
-                    }else{
-                        console.log("Resposta não esperada.")
-                    }
-                    process.exit();
-                })
+                questionToCreateConfigDir()
             })
             .catch(err => err)
         })

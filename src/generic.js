@@ -1,6 +1,18 @@
 const fs = require('fs')
 const { comment, black, bgWhite, bgRed, bgGreen } = require('./colorsVariables')
 
+exports.prompt = (question, callback) => {
+    const stdin = process.stdin
+    const stdout = process.stdout
+
+    stdin.resume();
+    stdout.write(question);
+
+    stdin.once('data', (data) => {
+        callback(data.toString().trim());
+    });
+}
+
 exports.logSuccess = (msg) => {
     console.log(bgGreen(black('Show!')), msg);
 }

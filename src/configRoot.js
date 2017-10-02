@@ -1,6 +1,6 @@
 const fs = require('fs')
 const { verifyConfigFile } = require('./configModule')
-const { logSuccess, logError } = require('./generic')
+const { logSuccess, logError, prompt } = require('./generic')
 const { comment, black, bgWhite, bgRed, bgGreen } = require('./colorsVariables')
 
 const verifyConfigRootFile = () => {
@@ -32,15 +32,37 @@ const writeConfigRootFile = (dataConfigErp) => {
     })
 }
 
-exports.defineRootErpToConfiguration = () => {
-    verifyConfigFile().catch(() => {
-        verifyConfigRootFile().then(() => {
-            const dataConfigErp = configDataRoot()
-            writeConfigRootFile(dataConfigErp)
-        }).catch(() => {
-            logError('Este projeto já está sendo usado.')
+const verifyErpConfigDir = () => {
+    return new Promise((resolve, reject) => {
+        fs.stat(`config/`, (err, stat) => {
+            if(err == null) {
+                reject(true) 
+            } else if(err.code == 'ENOENT') {
+                resolve(false)
+            }
         })
-    }).then(() => {
+    })
+}
+
+exports.defineRootErpToConfiguration = () => {
+    verifyConfigFile().then(() => {
         logError("Você não pode usar esta pasta como raiz, ela já é um módulo.")
     })
+    .catch(() => {
+        verifyConfigRootFile()
+        .then(() => {
+            const dataConfigErp = configDataRoot()
+            writeConfigRootFile(dataConfigErp)
+            verifyErpConfigDir().then(() => {
+                console.log("Este projeto não contém a pasta de configuração necessária.")
+                prompt("Deseja criar? ", (res) => {
+                    console.log(res)
+                })
+            })
+        })
+        .catch(() => {
+            logError('Este projeto já está sendo usado.')
+        })
+    })
+   
 }

@@ -9,26 +9,36 @@ const capitalize = function(str) {
 }
 
 const requireDefaultTemplateByType = (type = "") => {
-    if(type != "") type = capitalize(type)
-    let fileTemplate = `${__dirname}/defaultModuleFiles/default${type}.html`
+    let typeCap;
+    if(type != "") typeCap = capitalize(type)
+    let fileTemplate = `${__dirname}/defaultModuleFiles/default${typeCap}.html`
 
     return new Promise ((resolve, reject) => {
         fs.readFile(fileTemplate, (err, data) => {
-            err ? reject(err) : resolve(data)
+            if (err) {
+                if (err.code === 'ENOENT') {
+                    reject(`Por favor, escolha um tipo de template válido \nO template ${bgWhite(type)} não existe.`) 
+                }
+            }else{
+                resolve(data)
+            }
         })
     })
 }
 
 exports.createNewTemplate = (name, type) => {
     verifyConfigFile().then( async (result) => {
-        const template = await requireDefaultTemplateByType(type)
-        ifNotExists(name, 'html').then(() => {
-            fs.writeFile(`views/${name}.html`, template, (e) => {
-                if(e) throw e
-                logSuccess(`Arquivo ${bgWhite(name)} criado!`)
+        requireDefaultTemplateByType(type).then(template => {
+            ifNotExists(name, 'html').then(() => {
+                fs.writeFile(`views/${name}.html`, template, (e) => {
+                    if(e) throw e
+                    logSuccess(`Arquivo ${bgWhite(name)} criado!`)
+                })
+            }).catch((error) => {
+                logError(`Já existe um template com o nome ${bgWhite(name)}!`)
             })
-        }).catch((error) => {
-            logError(`Já existe um template com o nome ${bgWhite(name)}!`)
+        }).catch((err) => {
+            logError(err)
         })
     }).catch((err) => {
         logError('Error! Por favor, navegue até a raiz de um módulo válido.')

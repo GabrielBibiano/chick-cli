@@ -13,14 +13,12 @@ exports.createConfigModuleFile = (configModule) => {
 
 exports.verifyConfigFile = () => {
     return new Promise((resolve, reject) => {
-        fs.open('tijucli-module.json', 'r', (err) => {
+        fs.open('./tijucli-module.json', 'r', (err) => {
             if (err) {
-                if (err.code === 'ENOENT') {
-                    reject(err) 
-                }
+                reject(err) 
+            }else{
+                resolve(true)
             }
-
-            resolve(true)
         })
     })
 }

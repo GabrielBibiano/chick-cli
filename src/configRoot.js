@@ -32,7 +32,7 @@ const writeConfigRootFile = (dataConfigErp) => {
     })
 }
 
-const verifyErpConfigDir = () => {
+const verifyRootConfigDir = () => {
     return new Promise((resolve, reject) => {
         fs.stat(`config/`, (err, stat) => {
             if(err == null) {
@@ -44,8 +44,21 @@ const verifyErpConfigDir = () => {
     })
 }
 
+const createConfigDirRoot = () => {
+    return new Promise((resolve, reject) => {
+        fs.mkdir(`config/`, (err, stat) => {
+            if(err) {
+                reject(true) 
+            }else{
+                resolve(err)
+            }
+        })
+    })
+}
+
 exports.defineRootErpToConfiguration = () => {
-    verifyConfigFile().then(() => {
+    verifyConfigFile()
+    .then(() => {
         logError("Você não pode usar esta pasta como raiz, ela já é um módulo.")
     })
     .catch(() => {
@@ -53,16 +66,25 @@ exports.defineRootErpToConfiguration = () => {
         .then(() => {
             const dataConfigErp = configDataRoot()
             writeConfigRootFile(dataConfigErp)
-            verifyErpConfigDir().then(() => {
-                console.log("Este projeto não contém a pasta de configuração necessária.")
-                prompt("Deseja criar? ", (res) => {
-                    console.log(res)
+            verifyRootConfigDir()
+            .then(() => {
+                console.log("\nEste projeto não contém a pasta de configuração necessária.")
+                prompt("Deseja criar?(s/n) ", (res) => {
+                    if(res == "s" || res == "S"){
+                        createConfigDirRoot()
+                        .then( logSuccess("Pasta de configuração criada!") )
+                    }else if(res == "n" || res == "N"){
+                        console.log("Pasta não criada!")
+                    }else{
+                        console.log("Resposta não esperada.")
+                    }
+                    process.exit();
                 })
             })
+            .catch(err => err)
         })
         .catch(() => {
             logError('Este projeto já está sendo usado.')
         })
     })
-   
 }

@@ -4,7 +4,7 @@ const { verifyConfigFile } = require('./configModule')
 const { ifNotExists } = require('./generic')
 const { bgWhite } = require('./colorsVariables')
 
-const capitalize = function(str) {
+const capitalize = (str) => {
     return str.charAt(0).toUpperCase() + str.slice(1);
 }
 
@@ -27,20 +27,26 @@ const requireDefaultTemplateByType = (type = "") => {
 }
 
 exports.createNewTemplate = (name, type) => {
-    verifyConfigFile().then( async (result) => {
-        requireDefaultTemplateByType(type).then(template => {
-            ifNotExists(name, 'html').then(() => {
+    verifyConfigFile()
+    .then( async (result) => {
+        requireDefaultTemplateByType(type)
+        .then(template => {
+            ifNotExists(name, 'html')
+            .then(() => {
                 fs.writeFile(`views/${name}.html`, template, (e) => {
                     if(e) throw e
                     logSuccess(`Arquivo ${bgWhite(name)} criado!`)
                 })
-            }).catch((error) => {
+            })
+            .catch((error) => {
                 logError(`Já existe um template com o nome ${bgWhite(name)}!`)
             })
-        }).catch((err) => {
+        })
+        .catch((err) => {
             logError(err)
         })
-    }).catch((err) => {
+    })
+    .catch((err) => {
         logError('Error! Por favor, navegue até a raiz de um módulo válido.')
     })
 }

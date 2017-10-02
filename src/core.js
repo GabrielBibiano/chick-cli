@@ -24,13 +24,15 @@ exports.createNew = (...args) => {
 }
 
 exports.createNewModule = (configModule) => {
-    createModuleDir().then( async (result) => {
+    createModuleDir()
+    .then( async (result) => {
         logSuccess(result)
         await createConfigModuleFile(configModule)
         createViews(configModule.nome)
         createModels(configModule.nome)
         createControllers(configModule.nome)
-    }).catch(error => {
+    })
+    .catch(error => {
         logError(error)
     })
 }
@@ -50,7 +52,8 @@ const createModuleDir = () => {
 }
 
 const createViews = (fatherDir) => {
-    createViewsDir(fatherDir).then( async response => {
+    createViewsDir(fatherDir)
+    .then( async response => {
         logSuccess(response)
         await createModalsDir(fatherDir)
             .then(res => logSuccess(res))
@@ -61,7 +64,8 @@ const createViews = (fatherDir) => {
         createAllDefaultAssets(fatherDir)
             .then(res => logSuccess(res))
             .catch(error => logError(error))
-    }).catch((error) => {
+    })
+    .catch((error) => {
         logError(error)
     })
 }
@@ -124,7 +128,8 @@ const createAjaxDir = (fatherDir) => {
 }
 
 const createModels = (fatherDir) => {
-    createModelsDir(fatherDir).then(response => {
+    createModelsDir(fatherDir)
+    .then(response => {
         logSuccess(response)
     })
     .catch((error) => { 
@@ -133,8 +138,10 @@ const createModels = (fatherDir) => {
 }
 
 const createControllers = (fatherDir) => {
-    createControllersDir(fatherDir).then(response => {
-        createAjaxDir(fatherDir).catch(err => err)
+    createControllersDir(fatherDir)
+    .then(response => {
+        createAjaxDir(fatherDir)
+        .catch(err => err)
         logSuccess(response)
     })
     .catch(error => logError(error))

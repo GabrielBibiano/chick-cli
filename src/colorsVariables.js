@@ -1,8 +1,16 @@
 const colors = require('chalk')
 
 // Color to console comments
-exports.comment = colors.grey
-exports.black = colors.black
-exports.bgWhite = colors.bgBlack
-exports.bgRed = colors.bgRed
-exports.bgGreen = colors.bgGreen
+const comment = colors.grey
+const black = colors.black
+const bgWhite = colors.bgBlack
+const bgRed = colors.bgRed
+const bgGreen = colors.bgGreen
+
+module.exports = {
+    comment,
+    black,
+    bgWhite,
+    bgRed,
+    bgGreen
+}

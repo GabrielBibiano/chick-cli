@@ -8,6 +8,7 @@ const { comment, black, bgWhite, bgRed, bgGreen } = require('./colorsVariables')
 
 const allCommands = ["iniciar", "criar", "status"]
 allCommands["criar"] = ["template", "sub-modulo"]
+const filesCRUD = ['Incluir', 'Alterar', 'Excluir', 'Visualizar']
 
 exports.createNew = (...args) => {
     const createCommands = Array.from(allCommands.criar);
@@ -148,8 +149,6 @@ const createModels = (fatherDir) => {
 const createControllers = (fatherDir) => {
     createControllersDir(fatherDir)
     .then(response => {
-        createAjaxDir(fatherDir)
-        .catch(err => err)
         logSuccess(response)
     })
     .catch(error => logError(error))
@@ -169,9 +168,9 @@ const createModelsDir = (fatherDir) => {
 
 const createNewSubModule = (...moduleAttributes) => {
     const [subModuleName, subModuleType] = moduleAttributes;
-    const filesCRUD = ['Incluir', 'Alterar', 'Excluir', 'Visualizar']
 
-    fs.mkdir(subModuleName, (err) => {
+    //Criar views do submódulo
+    fs.mkdir(`views/${subModuleName}`, (err) => {
         if (err) {
             if (err.code == "EEXIST") {
                 logError("Este sub módulo já existe. \n")
@@ -182,7 +181,7 @@ const createNewSubModule = (...moduleAttributes) => {
 
         if(subModuleType == 'crud'){
             for(let i = 0; filesCRUD.length > i; i++){
-                const fileName = `${subModuleName}/${subModuleName}${filesCRUD[i]}.php`;
+                const fileName = `views/${subModuleName}/${subModuleName}${filesCRUD[i]}.html`;
                 fs.writeFile(fileName, filesCRUD[i] , (err) => {
                     if (err) logError(err);
                 });
@@ -190,5 +189,18 @@ const createNewSubModule = (...moduleAttributes) => {
         }
 
         logSuccess('Sub módulo criado!');
+    });
+
+    //Criar views do submódulo
+    fs.mkdir(`controllers/${subModuleName}`, (err) => {
+        if (err) {
+            if (err.code == "EEXIST") {
+                logError("Este sub módulo já existe. \n")
+            }
+            
+            logError(err);            
+        }
+
+        logSuccess('Pasta controllers criada!');
     });
 }

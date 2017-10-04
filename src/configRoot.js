@@ -3,7 +3,7 @@ const { verifyConfigFile } = require('./configModule')
 const { logSuccess, logError, prompt } = require('./generic')
 const { comment, black, bgWhite, bgRed, bgGreen } = require('./colorsVariables')
 
-const verifyConfigRootFile = () => {
+const verifyConfigRootFile = exports.verifyConfigRootFile = () => {
     return new Promise((resolve, reject) => {
         fs.stat(`./erp-config.json`, (err, stat) => {
             if(err == null) {
@@ -38,7 +38,7 @@ const verifyRootConfigDir = () => {
             if(err == null) {
                 reject(true) 
             } else if(err.code == 'ENOENT') {
-                resolve(false)
+                resolve()
             }
         })
     })

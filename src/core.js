@@ -1,6 +1,7 @@
 const fs = require('fs')
+const { verifyConfigRootFile } = require('./configRoot')
 const { logSuccess, logError } = require('./generic')
-const { createConfigModuleFile, verifyConfigFile } = require('./configModule')
+const { createConfigModuleFile } = require('./configModule')
 const { createNewTemplate } = require('./templates')
 const { createAllDefaultAssets } = require('./assets')
 const { comment, black, bgWhite, bgRed, bgGreen } = require('./colorsVariables')
@@ -24,9 +25,12 @@ exports.createNew = (...args) => {
 }
 
 exports.createNewModule = async (configModule) => {
-    const issetConfigFile = await verifyConfigFile()
-
-    if(issetConfigFile != true){
+    // Se existir arquivo de configuração raiz
+    verifyConfigRootFile()
+    .then(() => {
+        logError("Você só pode criar um módulo na raiz do projeto.")
+    })
+    .catch(() => {
         createModuleDir()
         .then( async (result) => {
             logSuccess(result)
@@ -38,9 +42,7 @@ exports.createNewModule = async (configModule) => {
         .catch(error => {
             logError(error)
         })
-    }else{
-        logError("Você não pode criar um módulo dentro de outro, crie um sub módulo.")
-    }
+    })
 }
 
 const createModuleDir = () => {
@@ -138,7 +140,7 @@ const createModels = (fatherDir) => {
     .then(response => {
         logSuccess(response)
     })
-    .catch((error) => { 
+    .catch(error => { 
         logError(error)
     })
 }

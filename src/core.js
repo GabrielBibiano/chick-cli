@@ -1,6 +1,6 @@
 const fs = require('fs')
 const { logSuccess, logError } = require('./generic')
-const { createConfigModuleFile } = require('./configModule')
+const { createConfigModuleFile, verifyConfigFile } = require('./configModule')
 const { createNewTemplate } = require('./templates')
 const { createAllDefaultAssets } = require('./assets')
 const { comment, black, bgWhite, bgRed, bgGreen } = require('./colorsVariables')
@@ -23,18 +23,24 @@ exports.createNew = (...args) => {
     }
 }
 
-exports.createNewModule = (configModule) => {
-    createModuleDir()
-    .then( async (result) => {
-        logSuccess(result)
-        await createConfigModuleFile(configModule)
-        createViews(configModule.nome)
-        createModels(configModule.nome)
-        createControllers(configModule.nome)
-    })
-    .catch(error => {
-        logError(error)
-    })
+exports.createNewModule = async (configModule) => {
+    const issetConfigFile = await verifyConfigFile()
+
+    if(issetConfigFile != true){
+        createModuleDir()
+        .then( async (result) => {
+            logSuccess(result)
+            await createConfigModuleFile(configModule)
+            createViews(configModule.nome)
+            createModels(configModule.nome)
+            createControllers(configModule.nome)
+        })
+        .catch(error => {
+            logError(error)
+        })
+    }else{
+        logError("Você não pode criar um módulo dentro de outro, crie um sub módulo.")
+    }
 }
 
 const createModuleDir = () => {

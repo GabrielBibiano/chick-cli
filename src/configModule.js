@@ -2,7 +2,7 @@ const fs = require('fs')
 const { logSuccess, logError } = require('./generic')
 const { comment, black, bgWhite, bgRed, bgGreen } = require('./colorsVariables')
 
-exports.createConfigModuleFile = (configModule) => {
+const createConfigModuleFile = (configModule) => {
     return new Promise((resolve, reject) => {
         fs.writeFile(`${configModule.nome}/tijucli-module.json`, JSON.stringify(configModule), (err) => {
             if (err) reject(logError(err));
@@ -11,7 +11,7 @@ exports.createConfigModuleFile = (configModule) => {
     }) 
 }
 
-exports.verifyConfigFile = () => {
+const verifyConfigFile = () => {
     return new Promise((resolve, reject) => {
         fs.open('./tijucli-module.json', 'r', (err) => {
             if (err) {
@@ -23,9 +23,15 @@ exports.verifyConfigFile = () => {
     })
 }
 
-exports.configDataModule = (projectName) => {
+const configDataModule = (projectName) => {
     return configModule = {
         nome: projectName,
         inicio: Date()
     }
+}
+
+module.exports = {
+    createConfigModuleFile,
+    verifyConfigFile,
+    configDataModule
 }

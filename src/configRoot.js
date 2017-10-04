@@ -3,7 +3,7 @@ const { verifyConfigFile } = require('./configModule')
 const { logSuccess, logError, prompt } = require('./generic')
 const { comment, black, bgWhite, bgRed, bgGreen } = require('./colorsVariables')
 
-const verifyConfigRootFile = exports.verifyConfigRootFile = () => {
+const verifyConfigRootFile = () => {
     return new Promise((resolve, reject) => {
         fs.stat(`./erp-config.json`, (err, stat) => {
             if(err == null) {
@@ -126,7 +126,7 @@ const questionToCreateModelsDir = () => {
     })
 }
 
-exports.defineRootErpToConfiguration = () => {
+const defineRootErpToConfiguration = () => {
     verifyConfigFile()
     .then(() => {
         logError("Você não pode usar esta pasta como raiz, ela já é um módulo.")
@@ -154,4 +154,9 @@ exports.defineRootErpToConfiguration = () => {
             logError('Este projeto já está sendo usado.')
         })
     })
+}
+
+module.exports = {
+    verifyConfigRootFile,
+    defineRootErpToConfiguration
 }

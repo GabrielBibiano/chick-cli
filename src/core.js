@@ -6,16 +6,16 @@ const { createNewTemplate } = require('./templates')
 const { createAllDefaultAssets } = require('./assets')
 const { comment, black, bgWhite, bgRed, bgGreen } = require('./colorsVariables')
 
-const allCommands = ["iniciar", "criar", "status"]
-allCommands["criar"] = ["template", "sub-modulo"]
 const filesCRUD = ['Incluir', 'Alterar', 'Excluir', 'Visualizar']
+const allCommands = ["iniciar", "criar", "status"]
+allCommands["criar"] = ["template", "sub"]
 
-exports.createNew = (...args) => {
+const createNew = (...args) => {
     const createCommands = Array.from(allCommands.criar);
     const [itemToCreate, name, type] = args;
 
     if(createCommands.includes(itemToCreate)){
-        if(itemToCreate == 'sub-modulo'){
+        if(itemToCreate == 'sub'){
             createNewSubModule(name, type)
         }else if(itemToCreate == 'template'){
             createNewTemplate(name, type)
@@ -25,8 +25,8 @@ exports.createNew = (...args) => {
     }
 }
 
-exports.createNewModule = async (configModule) => {
-    // Se existir arquivo de configuração raiz
+const createNewModule = (configModule) => {
+    // Se não existir arquivo de configuração raiz
     verifyConfigRootFile()
     .then(() => {
         logError("Você só pode criar um módulo na raiz do projeto.")
@@ -191,7 +191,6 @@ const createNewSubModule = (...moduleAttributes) => {
         logSuccess('Sub módulo criado!');
     });
 
-    //Criar views do submódulo
     fs.mkdir(`controllers/${subModuleName}`, (err) => {
         if (err) {
             if (err.code == "EEXIST") {
@@ -203,4 +202,9 @@ const createNewSubModule = (...moduleAttributes) => {
 
         logSuccess('Pasta controllers criada!');
     });
+}
+
+module.exports = {
+    createNew,
+    createNewModule
 }

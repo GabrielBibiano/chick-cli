@@ -8,7 +8,8 @@ exports.displayHelpers = (command = null) => {
     Modo de uso: tiju <comando> [...opcionais]
 
     Comandos:
-
+      
+      usar                define este diretório como a raiz do projeto
       iniciar             criar novo módulo
       criar               criar novo template(view) ou sub-modulo
       status              ver as configurações do módulo

@@ -149,7 +149,7 @@ const createControllers = (fatherDir) => {
     .then(response => {
         logSuccess(response)
     })
-    .catch(error => logError(error))
+    .catch( error => logError(error) )
 }
 
 const createModelsDir = (fatherDir) => {

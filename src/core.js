@@ -1,7 +1,7 @@
 const fs = require('fs')
 const { verifyConfigRootFile } = require('./configRoot')
-const { logSuccess, logError } = require('./generic')
-const { createConfigModuleFile, addModuleInConfigFile } = require('./configModule')
+const { logSuccess, logError, progressStart, progressStop, random } = require('./generic')
+const { verifyConfigFile, createConfigModuleFile, addModuleInConfigFile } = require('./configModule')
 const { createNewTemplate } = require('./templates')
 const { createAllDefaultAssets } = require('./assets')
 const { comment, black, bgWhite, bgRed, bgGreen } = require('./colorsVariables')
@@ -16,7 +16,16 @@ const createNew = (...args) => {
 
     if(createCommands.includes(itemToCreate)){
         if(itemToCreate == 'sub'){
-            createNewSubModule(name, type)
+            verifyConfigFile()
+            .then(() => {
+                progressStart("Aguarde")
+                setTimeout(() => {
+                    createNewSubModule(name, type)
+                    progressStop()
+                }, 3000)
+            }).catch(() => {
+                logError("Você só pode criar um sub módulo no diretório de um módulo.")
+            })
         }else if(itemToCreate == 'template'){
             createNewTemplate(name, type)
         }
@@ -26,19 +35,19 @@ const createNew = (...args) => {
 }
 
 const createNewModule = (configModule) => {
-    // Se não existir arquivo de configuração raiz
+    // Se existir arquivo de configuração raiz
     verifyConfigRootFile()
-    .then(() => {
-        logError("Você só pode criar um módulo na raiz do projeto.")
-    })
+    .then(() => logError("Você só pode criar um módulo na raiz do projeto."))
     .catch(() => {
         createModuleDir()
         .then( async (result) => {
+            progressStart("Aguarde")
             logSuccess(result)
             await createConfigModuleFile(configModule)
-            createViews(configModule.nome)
-            createModels(configModule.nome)
-            createControllers(configModule.nome)
+            await createViews(configModule.nome)
+            await createModels(configModule.nome)
+            await createControllers(configModule.nome)
+            progressStop()
         })
         .catch( error => logError(error) )
     })
@@ -59,21 +68,25 @@ const createModuleDir = () => {
 }
 
 const createViews = (fatherDir) => {
-    createViewsDir(fatherDir)
-    .then( async response => {
-        logSuccess(response)
-        await createModalsDir(fatherDir)
-            .then(res => logSuccess(res))
-            .catch(error => logError(error))
-        createDefaultViewFile(fatherDir)
-            .then(res => logSuccess(res))
-            .catch(error => logError(error))
-        createAllDefaultAssets(fatherDir)
-            .then(res => logSuccess(res))
-            .catch(error => logError(error))
-    })
-    .catch((error) => {
-        logError(error)
+    return new Promise ((resolve, reject) => {
+        createViewsDir(fatherDir)
+        .then( async (response) => {
+            logSuccess(response)
+            await createModalsDir(fatherDir)
+                .then(res => logSuccess(res, random()))
+                .catch(error => logError(error))
+            await createDefaultViewFile(fatherDir)
+                .then(res => logSuccess(res, random()))
+                .catch(error => logError(error))
+            await createAllDefaultAssets(fatherDir)
+                .then(res => logSuccess(res, random()) )
+                .catch(error => logError(error))
+            resolve()
+        })
+        .catch((error) => {
+            logError(error)
+            reject()
+        })
     })
 }
 
@@ -135,21 +148,29 @@ const createAjaxDir = (fatherDir) => {
 }
 
 const createModels = (fatherDir) => {
-    createModelsDir(fatherDir)
-    .then(response => {
-        logSuccess(response)
-    })
-    .catch(error => { 
-        logError(error)
+    return new Promise((resolve, reject) => {
+        createModelsDir(fatherDir)
+        .then(response => {
+            resolve(logSuccess(response, random()))
+        })
+        .catch(error => { 
+            logError(error)
+            reject()
+        })
     })
 }
 
 const createControllers = (fatherDir) => {
-    createControllersDir(fatherDir)
-    .then(response => {
-        logSuccess(response)
+    return new Promise( (resolve, reject) => {
+        createControllersDir(fatherDir)
+        .then(response => {
+            resolve(logSuccess(response, random()))
+        })
+        .catch( error => { 
+            reject() 
+            logError(error) 
+        })
     })
-    .catch( error => logError(error) )
 }
 
 const createModelsDir = (fatherDir) => {

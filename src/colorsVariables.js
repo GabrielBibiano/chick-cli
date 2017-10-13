@@ -6,11 +6,13 @@ const black = colors.black
 const bgWhite = colors.bgBlack
 const bgRed = colors.bgRed
 const bgGreen = colors.bgGreen
+const green = colors.green
 
 module.exports = {
     comment,
     black,
     bgWhite,
     bgRed,
-    bgGreen
+    bgGreen,
+    green
 }

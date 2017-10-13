@@ -4,9 +4,7 @@ const { verifyConfigFile } = require('./configModule')
 const { ifNotExists } = require('./generic')
 const { bgWhite } = require('./colorsVariables')
 
-const capitalize = (str) => {
-    return str.charAt(0).toUpperCase() + str.slice(1);
-}
+const capitalize = (str) => str.charAt(0).toUpperCase() + str.slice(1)
 
 const requireDefaultTemplateByType = (type = "") => {
     let typeCap;
@@ -28,7 +26,7 @@ const requireDefaultTemplateByType = (type = "") => {
 
 exports.createNewTemplate = (name, type) => {
     verifyConfigFile()
-    .then( async (result) => {
+    .then( (result) => {
         requireDefaultTemplateByType(type)
         .then(template => {
             ifNotExists(name, 'html')

@@ -1,7 +1,7 @@
 const fs = require('fs')
 const { verifyConfigRootFile } = require('./configRoot')
 const { logSuccess, logError } = require('./generic')
-const { createConfigModuleFile } = require('./configModule')
+const { createConfigModuleFile, addModuleInConfigFile } = require('./configModule')
 const { createNewTemplate } = require('./templates')
 const { createAllDefaultAssets } = require('./assets')
 const { comment, black, bgWhite, bgRed, bgGreen } = require('./colorsVariables')
@@ -40,9 +40,7 @@ const createNewModule = (configModule) => {
             createModels(configModule.nome)
             createControllers(configModule.nome)
         })
-        .catch(error => {
-            logError(error)
-        })
+        .catch( error => logError(error) )
     })
 }
 
@@ -202,6 +200,8 @@ const createNewSubModule = (...moduleAttributes) => {
 
         logSuccess('Pasta controllers criada!');
     });
+
+    addModuleInConfigFile(subModuleName)
 }
 
 module.exports = {

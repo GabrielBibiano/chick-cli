@@ -18,7 +18,8 @@ const verifyConfigRootFile = () => {
 const configDataRoot = (projectName) => {
     return configRoot = {
         pasta: process.env.PWD,
-        inicio: Date()
+        inicio: Date(),
+        modules: {}
     }
 }
 
@@ -120,7 +121,7 @@ const questionToCreateModelsDir = () => {
         }else if(res == "n" || res == "N"){
             console.log("Pasta não criada!")
         }else{
-            console.log("Resposta não esperada.")
+            logError("Resposta não esperada.")
         }
         process.exit()
     })

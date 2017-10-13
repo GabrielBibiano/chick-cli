@@ -8,11 +8,11 @@ const prompt = (question, callback) => {
     stdin.resume();
     stdout.write(question);
 
-    stdin.once( 'data', (data) => callback( data.toString().trim() ) );
+    stdin.once( 'data', ( data ) => callback( data.toString().trim() ) );
 }
 
-const logSuccess = (msg) => console.log( bgGreen( black( 'Show!' ) ), msg )
-const logError = (msg) => console.log( bgRed( 'Ops!' ), msg )
+const logSuccess = ( msg ) => console.log( bgGreen( black( 'Show!' ) ), msg )
+const logError = ( msg ) => console.log( bgRed( 'Ops!' ), msg )
 
 const ifNotExists = (name, ext) => {
     return new Promise((resolve, reject) => {

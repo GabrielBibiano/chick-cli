@@ -10,12 +10,15 @@ const configDataModule = (projectName) => {
     }
 }
 
-const createConfigModuleFile = (configModule) => {
-    return new Promise((resolve, reject) => {
+const createConfigModuleFile = ( configModule ) => {
+    return new Promise( ( resolve, reject ) => {
         const param = JSON.stringify(configModule)
         fs.writeFile(`${configModule.nome}/tijucli-module.json`, param, (err) => {
-            if (err) reject(logError(err));
-            resolve(logSuccess('Configurações salvas!'))
+            if (err) {
+                reject( logError( err ) )
+            }else{
+                resolve( logSuccess( 'Configurações salvas!' ) )
+            }
         });
     }) 
 }

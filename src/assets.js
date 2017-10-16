@@ -46,15 +46,15 @@ const createCssDefaultFile = (fatherDir) => {
 exports.createAllDefaultAssets = (fatherDir) => {
     return new Promise((resolve, reject) => {
         createAssetsDirByFather(fatherDir)
-        .then( async () => {
-            await createJsDir(fatherDir)
-            .then(() =>  createJsDefaultFile(fatherDir))
+            .then( async () => {
+                await createJsDir(fatherDir)
+                    .then(() =>  createJsDefaultFile(fatherDir))
+                    .catch((err) => reject(err))
+                await createCssDir(fatherDir)
+                    .then(() => createCssDefaultFile(fatherDir))
+                    .catch((err) => reject(err))
+                resolve('Assets criados!')
+            })
             .catch((err) => reject(err))
-            await createCssDir(fatherDir)
-            .then(() => createCssDefaultFile(fatherDir))
-            .catch((err) => reject(err))
-            resolve('Assets criados!')
-        })
-        .catch((err) => reject(err))
     })
 }

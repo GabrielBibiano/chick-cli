@@ -19,10 +19,8 @@ const createNew = (...args) => {
             verifyConfigFile()
             .then(() => {
                 progressStart("Aguarde")
-                setTimeout(() => {
-                    createNewSubModule(name, type)
-                    progressStop()
-                }, 3000)
+                createNewSubModule(name, type)
+                progressStop()
             }).catch(() => {
                 logError("Você só pode criar um sub módulo no diretório de um módulo.")
             })
@@ -37,20 +35,20 @@ const createNew = (...args) => {
 const createNewModule = (configModule) => {
     // Se existir arquivo de configuração raiz
     verifyConfigRootFile()
-    .then(() => logError("Você só pode criar um módulo na raiz do projeto."))
-    .catch(() => {
-        createModuleDir()
-        .then( async (result) => {
-            progressStart("Aguarde")
-            logSuccess(result)
-            await createConfigModuleFile(configModule)
-            await createViews(configModule.nome)
-            await createModels(configModule.nome)
-            await createControllers(configModule.nome)
-            progressStop()
+        .then( () => logError("Você só pode criar um módulo na raiz do projeto.") )
+        .catch( () => {
+            createModuleDir()
+                .then( async result  => {
+                    progressStart("Aguarde")
+                    logSuccess(result)
+                    await createConfigModuleFile( configModule )
+                    await createViews( configModule.nome )
+                    await createModels( configModule.nome )
+                    await createControllers( configModule.nome )
+                    progressStop()
+                })
+                .catch( error => logError(error) )
         })
-        .catch( error => logError(error) )
-    })
 }
 
 const createModuleDir = () => {
@@ -67,26 +65,26 @@ const createModuleDir = () => {
     })
 }
 
-const createViews = (fatherDir) => {
-    return new Promise ((resolve, reject) => {
-        createViewsDir(fatherDir)
-        .then( async (response) => {
-            logSuccess(response)
-            await createModalsDir(fatherDir)
-                .then(res => logSuccess(res, random()))
-                .catch(error => logError(error))
-            await createDefaultViewFile(fatherDir)
-                .then(res => logSuccess(res, random()))
-                .catch(error => logError(error))
-            await createAllDefaultAssets(fatherDir)
-                .then(res => logSuccess(res, random()) )
-                .catch(error => logError(error))
-            resolve()
-        })
-        .catch((error) => {
-            logError(error)
-            reject()
-        })
+const createViews = ( fatherDir ) => {
+    return new Promise( ( resolve, reject ) => {
+        createViewsDir( fatherDir )
+            .then( async ( response ) => {
+                logSuccess( response )
+                await createModalsDir( fatherDir )
+                    .then( res => logSuccess( res ) )
+                    .catch( error => logError( error ) )
+                await createDefaultViewFile( fatherDir )
+                    .then( res => logSuccess( res) )
+                    .catch( error => logError( error ) )
+                await createAllDefaultAssets( fatherDir )
+                    .then( res => logSuccess( res) )
+                    .catch( error => logError( error ) )
+                resolve()
+            })
+            .catch( ( error ) => {
+                logError( error )
+                reject()
+            })
     })
 }
 
@@ -147,24 +145,24 @@ const createAjaxDir = (fatherDir) => {
     })
 }
 
-const createModels = (fatherDir) => {
-    return new Promise((resolve, reject) => {
-        createModelsDir(fatherDir)
-        .then(response => {
-            resolve(logSuccess(response, random()))
-        })
-        .catch(error => { 
-            logError(error)
-            reject()
-        })
+const createModels = ( fatherDir ) => {
+    return new Promise( ( resolve, reject ) => {
+        createModelsDir( fatherDir )
+            .then( response => {
+                resolve( logSuccess( response ) )
+            })
+            .catch( error => { 
+                logError( error )
+                reject()
+            })
     })
 }
 
 const createControllers = (fatherDir) => {
     return new Promise( (resolve, reject) => {
         createControllersDir(fatherDir)
-        .then(response => {
-            resolve(logSuccess(response, random()))
+        .then( response => {
+            resolve( logSuccess(response) )
         })
         .catch( error => { 
             reject() 

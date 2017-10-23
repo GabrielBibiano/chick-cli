@@ -29,7 +29,7 @@ const writeConfigRootFile = (dataConfigErp) => {
             if (err) reject(logError(err))
         })
 
-        resolve(logSuccess("Pasta raiz do ERP definida!"))
+        resolve( logSuccess("Pasta raiz do ERP definida!") )
     })
 }
 
@@ -104,26 +104,35 @@ const createManagerModel = () => {
             if(err){
                 reject(err)
                 console.log(error)
+            }else{
+                resolve()
             }
-            resolve()
         })
     })
 }
 
 const questionToCreateModelsDir = () => {
-    prompt("Deseja criar?(s/n) ", async (res) => {
+    prompt("Deseja criar?(s/n) ", (res) => {
         if(res == "s" || res == "S"){
-            await createModelsDirRoot()
-            .then( async () => {
-                await createManagerModel()
-                logSuccess("Pasta models criada!") 
+            createModelsDirRoot()
+            .then( () => {
+                createManagerModel()
+                .then( () => {
+                    logSuccess("Pasta models criada!") 
+                })
+                .catch( () => {
+                    logError("Pasta models criada com erro ao escrever arquivos necessários!") 
+                })
             })
         }else if(res == "n" || res == "N"){
             console.log("Pasta não criada!")
         }else{
             logError("Resposta não esperada.")
         }
-        process.exit()
+
+        setTimeout( () => {
+            process.exit()
+        }, 1000)
     })
 }
 
@@ -143,7 +152,7 @@ const defineRootErpToConfiguration = () => {
                 questionToCreateConfigDir()
                 .then(() => {
                     verifyIfThisDirExists('models')
-                    .then(() => {
+                    .then( () => {
                         console.log("\nEste projeto não contém a pasta models.")
                         questionToCreateModelsDir()
                     })
@@ -157,7 +166,35 @@ const defineRootErpToConfiguration = () => {
     })
 }
 
+const readConfigRootFile = () => {
+    return new Promise( ( resolve, reject ) => {
+        fs.readFile(`erp-config.json`, ( err, data ) => {
+            if ( err ) reject( logError( err ) );
+            resolve( JSON.parse( data ) )
+        });
+    }) 
+}
+
+const reWriteConfigModuleFile = ( configModule ) => {
+    return new Promise( ( resolve, reject ) => {
+        const param = JSON.stringify( configModule )
+        fs.writeFile(`erp-config.json`, JSON.stringify( configModule ), ( err ) => {
+            if ( err ) reject( logError( err ) );
+            resolve( logSuccess( 'Configurações salvas!' ) )
+        });
+    }) 
+}
+
+const addModuleInConfigRootFile = async ( name ) => {
+    let dataConfig = await readConfigRootFile()
+    dataConfig.modules[ name ] = new Date()
+    
+    reWriteConfigModuleFile( dataConfig )
+}
+
 module.exports = {
     verifyConfigRootFile,
-    defineRootErpToConfiguration
+    defineRootErpToConfiguration,
+    addModuleInConfigRootFile,
+    readConfigRootFile
 }

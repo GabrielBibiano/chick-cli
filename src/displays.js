@@ -1,7 +1,10 @@
 const fs = require('fs')
 const { comment, bgWhite } = require('./colorsVariables')
+const { logSuccess, logError } = require( './generic' )
+const { readConfigModuleFile } = require( './configModule' )
+const { verifyConfigRootFile, readConfigRootFile } = require( './configRoot' )
 
-exports.displayHelpers = (command = null) => {
+exports.displayHelpers = ( command = null ) => {
     let helpers;
     if (command == null){
         helpers = `
@@ -21,12 +24,12 @@ exports.displayHelpers = (command = null) => {
 
     Exemplo:
     
-      ${comment('# cria um novo módulo chamado viagens')}
+      ${ comment('# cria um novo módulo chamado viagens') }
       $ tiju iniciar viagens
         `;
     }else if (command == 'criar'){
         helpers = `
-    ${comment('# <> = comando obrigatório; [] = argumento opcional;')}
+    ${ comment('# <> = comando obrigatório; [] = argumento opcional;') }
     Modo de uso: $ tiju criar <item> <nome> [tipo]
 
     <item> = template || sub-modulo
@@ -46,29 +49,61 @@ exports.displayHelpers = (command = null) => {
         `;
     }
    
-    console.log(helpers)
+    console.log( helpers )
 }
 
 exports.displayConfig = () => {
-    fs.open('tijucli-module.json', 'r', (err) => {
-        if (err) {
-            if (err.code === 'ENOENT') {
-                console.error("O aquivo de configuração não existe.");
-                return;
+    verifyConfigRootFile()
+    .then( () => {
+        fs.open('tijucli-module.json', 'r', ( err ) => {
+            if (err) {
+                if (err.code === 'ENOENT') {
+                    logError( "O aquivo de configuração não existe." )
+                    return;
+                }
+
+                throw err;
             }
 
-            throw err;
-        }
+            fs.readFile('tijucli-module.json', ( err, data ) => {
+                if ( err ) throw err;
+                data = JSON.parse( data )
+                console.log(
+                `
+                Nome: ${ data.nome }
+                Inicio: ${ data.inicio }
+                `)
 
-        fs.readFile('tijucli-module.json', (err, data) => {
-            if (err) throw err;
-            data = JSON.parse(data)
+            });
+        });
+    })
+    .catch( async () => {
+        // Lê o arquivo de configuração raiz
+        const dataConfig = await readConfigRootFile()
+        const modulos = Object.keys( dataConfig.modules )
+        let log = '';
+
+        modulos.forEach( async item => {
+            let logSubmodules = ''
+
+            // Lê o arquivo de configuração do múdulo
+            const sub = await readConfigModuleFile( item )
+            const subModulos = Object.keys( sub.subModules )
+            
+            subModulos.forEach( sub => {
+                logSubmodules += `\n \t \t \t    | --  ${ sub } `
+            })
+
+            log += `\n \t \t \t| -- ${ item } ${ logSubmodules } `
+        })
+
+        setTimeout( () => {
             console.log(
             `
-            Nome: ${data.nome}
-            Inicio: ${data.inicio}
+            Pasta raiz: ${ dataConfig.pasta }
+            Inicio: ${ dataConfig.inicio }
+            Módulos: ---${ log }
             `)
-
-        });
-    });
+        }, 500)
+    })
 }

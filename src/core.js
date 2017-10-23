@@ -1,5 +1,5 @@
 const fs = require( 'fs' )
-const { verifyConfigRootFile } = require( './configRoot' )
+const { verifyConfigRootFile, addModuleInConfigRootFile } = require( './configRoot' )
 const { logSuccess, logError, progressStart, progressStop, random } = require( './generic' )
 const { verifyConfigFile, createConfigModuleFile, addModuleInConfigFile } = require( './configModule' )
 const { createNewTemplate } = require( './templates' )
@@ -38,13 +38,14 @@ const createNewModule = ( configModule ) => {
         .then( () => logError( 'Você só pode criar um módulo na raiz do projeto.' ) )
         .catch( () => {
             createModuleDir()
-                .then( async result  => {
+                .then( async result => {
                     progressStart( 'Aguarde' )
                     logSuccess( result )
                     await createConfigModuleFile( configModule )
                     await createViews( configModule.nome )
                     await createModels( configModule.nome )
                     await createControllers( configModule.nome )
+                    addModuleInConfigRootFile( configModule.nome )
                     progressStop()
                 })
                 .catch( error => logError( error ) )
@@ -94,7 +95,7 @@ const createViewsDir = ( fatherDir ) => new Promise( ( resolve, reject ) => {
     });
 })
 
-const createModalsDir = ( fatherDir ) =>  new Promise( ( resolve, reject ) => {
+const createModalsDir = ( fatherDir ) => new Promise( ( resolve, reject ) => {
     fs.mkdir(`${ fatherDir }/views/modal`, ( err ) => {
         ( err ) 
             ? reject( err )

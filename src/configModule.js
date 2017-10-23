@@ -34,7 +34,7 @@ const reWriteConfigModuleFile = (configModule) => {
 }
 
 const verifyConfigFile = () => {
-    return new Promise((resolve, reject) => {
+    return new Promise( ( resolve, reject ) => {
         fs.open('./tijucli-module.json', 'r', (err) => {
             if (err) {
                 reject(err) 
@@ -45,18 +45,19 @@ const verifyConfigFile = () => {
     })
 }
 
-const readConfigModuleFile = () => {
-    return new Promise((resolve, reject) => {
-        fs.readFile(`tijucli-module.json`, (err, data) => {
+const readConfigModuleFile = ( dir = '' ) => {
+    return new Promise( ( resolve, reject ) => {
+        if(dir !== '') dir = dir + '/'
+        fs.readFile(`${dir}tijucli-module.json`, (err, data) => {
             if (err) reject(logError(err));
-            resolve(JSON.parse(data))
+            resolve( JSON.parse( data ) )
         });
     }) 
 }
 
-const addModuleInConfigFile = async (name) => {
+const addModuleInConfigFile = async ( name ) => {
     let dataConfig = await readConfigModuleFile()
-    dataConfig.subModules[name] = new Date()
+    dataConfig.subModules[ name ] = new Date()
     
     reWriteConfigModuleFile(dataConfig)
 }
@@ -65,5 +66,6 @@ module.exports = {
     createConfigModuleFile,
     verifyConfigFile,
     configDataModule,
-    addModuleInConfigFile
+    addModuleInConfigFile,
+    readConfigModuleFile
 }

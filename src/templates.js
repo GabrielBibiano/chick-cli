@@ -26,27 +26,30 @@ const requireDefaultTemplateByType = ( type = '' ) => {
     })
 }
 
-exports.createNewTemplate = (name, type) => {
+exports.createNewTemplate = ( name, type ) => {
     verifyConfigFile()
-    .then( (result) => {
-        requireDefaultTemplateByType(type)
-        .then(template => {
-            ifNotExists(name, 'html')
-            .then(() => {
-                fs.writeFile(`views/${name}.html`, template, (e) => {
+    .then( ( result ) => {
+        requireDefaultTemplateByType( type )
+        .then( template => {
+            ifNotExists( name, 'html' )
+            .then( () => {
+                if( type === 'modal' ) 
+                    name = `modal/${name}`
+
+                fs.writeFile(`views/${name}.html`, template, ( e ) => {
                     if(e) throw e
-                    logSuccess(`Arquivo ${bgWhite(name)} criado!`)
+                    logSuccess( `Arquivo ${ bgWhite( name ) } criado!` )
                 })
             })
-            .catch((error) => {
-                logError(`Já existe um template com o nome ${bgWhite(name)}!`)
+            .catch( ( error ) => {
+                logError( `Já existe um template com o nome ${ bgWhite( name ) }!` )
             })
         })
-        .catch((err) => {
-            logError(err)
+        .catch( ( err ) => {
+            logError(err )
         })
     })
-    .catch((err) => {
-        logError('Error! Por favor, navegue até a raiz de um módulo válido.')
+    .catch( ( err ) => {
+        logError( 'Error! Por favor, navegue até a raiz de um módulo válido.' )
     })
 }

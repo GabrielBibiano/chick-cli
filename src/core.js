@@ -14,20 +14,18 @@ const createNew = ( ...args ) => {
     const createCommands = Array.from( allCommands.criar )
     const [ itemToCreate, name, type ] = args
 
-    if( createCommands.includes( itemToCreate ) ){
-        if( itemToCreate == 'sub' ){
+    if ( createCommands.includes( itemToCreate ) ) {
+        if ( itemToCreate == 'sub' ) { 
             verifyConfigFile()
             .then( () => {
-                progressStart( 'Aguarde' )
                 createNewSubModule( name, type )
-                progressStop()
             }).catch( () => {
                 logError( 'Você só pode criar um sub módulo no diretório de um módulo.' )
             })
-        }else if( itemToCreate == 'template' ){
+        } else if ( itemToCreate == 'template' ) {
             createNewTemplate( name, type )
         }
-    }else{
+    } else {
         logError( 'Digite um comando suportado' )
     }
 }
@@ -140,13 +138,13 @@ const createModels = ( fatherDir ) => new Promise( ( resolve, reject ) => {
 
 const createControllers = ( fatherDir ) => new Promise( ( resolve, reject ) => {
     createControllersDir( fatherDir )
-    .then( response => {
-        resolve( logSuccess( response ) )
-    })
-    .catch( error => { 
-        reject()
-        logError( error ) 
-    })
+        .then( response => {
+            resolve( logSuccess( response ) )
+        })
+        .catch( error => { 
+            reject()
+            logError( error ) 
+        })
 })
 
 const createModelsDir = ( fatherDir ) => new Promise( ( resolve, reject ) => {
@@ -168,33 +166,36 @@ const createNewSubModule = ( ...moduleAttributes ) => {
             }
             
             logError( err );            
-        }
-
-        if( subModuleType == 'crud' ){
-            for( let i = 0; filesCRUD.length > i; i++ ){
-                const fileName = `views/${ subModuleName }/${ subModuleName }${ filesCRUD[ i ] }.html`;
-                fs.writeFile( fileName, filesCRUD[ i ], ( err ) => {
-                    if ( err ) logError( err )
-                });
+        }else {
+            progressStart( 'Aguarde' )
+            if( subModuleType == 'crud' ){
+                for( let i = 0; filesCRUD.length > i; i++ ){
+                    const fileName = `views/${ subModuleName }/${ subModuleName }${ filesCRUD[ i ] }.html`;
+                    fs.writeFile( fileName, filesCRUD[ i ], ( err ) => {
+                        if ( err ) logError( err )
+                    });
+                }
             }
+
+            logSuccess('Sub módulo criado!')
+
+            fs.mkdir(`controllers/${ subModuleName }`, ( err ) => {
+                if ( err ) {
+                    if ( err.code == 'EEXIST' ) {
+                        logError( 'Este sub módulo já existe. \n' )
+                    }
+                    
+                    logError( err )
+                }
+
+                logSuccess( 'Pasta controllers criada!' )
+            });
+
+            addModuleInConfigFile( subModuleName )
+            progressStop()
         }
 
-        logSuccess('Sub módulo criado!')
     });
-
-    fs.mkdir(`controllers/${ subModuleName }`, ( err ) => {
-        if ( err ) {
-            if ( err.code == 'EEXIST' ) {
-                logError( 'Este sub módulo já existe. \n' )
-            }
-            
-            logError( err )
-        }
-
-        logSuccess( 'Pasta controllers criada!' )
-    });
-
-    addModuleInConfigFile( subModuleName )
 }
 
 module.exports = {

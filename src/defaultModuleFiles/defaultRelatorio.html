@@ -5,8 +5,271 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Relatório</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
+    <style lang="">
+        aside{
+            position: fixed;
+            width: 50px;
+            background-color: #ddd;
+            right: 9em;
+            margin-top: 7em;
+            font-size: 12px;
+            height: 80px;
+        }
+        
+        main{
+            margin: 1em 0em;
+        }
+
+        img{
+            margin: 10px 0px;
+            margin-left: 0px;
+            margin-top: 5px;
+        }
+
+        thead th{
+            border: 3px solid #ffffff !important;
+        }
+
+        thead td{
+            border: 3px solid #ffffff !important;
+        }
+
+        tbody{
+            font-size: 12px;
+        }
+
+        tbody th{
+            border: 3px solid #ffffff !important;
+        }
+
+        tbody td{
+            border: 3px solid #ffffff  !important;
+            padding-bottom: 0.5em !important;
+            padding-top: 0.5em !important;
+        }
+
+        tbody tr:not(.bg-sub-tijuca){
+            background-color: #C9E4C6;
+        }
+
+        .bg-tijuca{
+            background-color: #1B5593;
+            color: #fff;
+            font-size: 15px;
+        }
+
+        .bg-tijuca th{
+            padding: 0.2em;
+        }
+
+        .bg-sub-tijuca{
+            background-color: #437A4E;
+            color: #fff;
+            font-size: 13px;
+            padding: 10px;
+        }
+
+        .bg-sub-tijuca th{
+            padding: 6px;
+        }
+
+        .bg-sub-tijuca{
+            font-weight: bold;
+        }
+
+        #desc-relatorio-date{
+            font-size: 13px;
+            margin-bottom: 0.5em;
+        }
+
+        .container{
+            padding: 0em 1.5em;
+        }
+
+        hr{
+            margin-top: 0;
+            margin-bottom: 1rem;
+            border: 0;
+            border-top: 1px solid rgb(197, 200, 204);
+        }
+    </style>
 </head>
 <body>
-    
+    <aside>
+        Email <br>
+        PDF <br>
+        Imprimir
+    </aside>
+    <main>
+        <div class="container">
+            <div class="row justify-content-center ">
+                <div class="col-11">
+                    <div class="row justify-content-between align-items-end">
+                        <div class="col-2">
+                            <img src="./logo.png" alt="" width="200px">
+                        </div>
+                        <div class="col-5 text-right">
+                            <p id="desc-relatorio-date">
+                                Relatório ERP Tijuca Alimentos Ltda - 00/00/0000 às 00:00:00
+                            </p>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="row justify-content-center">
+                        <div class="col-12">
+                            <table class="table table-sm text-center">
+                                <thead>
+                                    <tr class="bg-tijuca">
+                                        <th colspan="8">Relatório Padrão - Período de 00/00/0000 à 00:00:00</th>
+                                    </tr>
+                                    <tr class="bg-sub-tijuca">
+                                        <th colspan="8">Vendas por Grupo de Produtos</th>
+                                    </tr>
+                                    <tr class="bg-sub-tijuca">
+                                        <td width="7%"></td>
+                                        <td width="36%">Grupo de Produtos</td>
+                                        <td width="10%">Qtde Pedidos</td>
+                                        <td width="17%">Qtde Total</td>
+                                        <td width="13%">Valor Médio</td>
+                                        <td width="12%">Valor Total</td>
+                                        <td width="5%">%</td>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>
+                                            <a id="mostrarResumo5" href="javascript:detalhar('5');"> Detalhar</a>
+                                        </td>
+                                        <td>OUTROS</td>
+                                        <td>13</td>
+                                        <td>29,00</td>
+                                        <td>50,000</td>
+                                        <td>1.450,00</td>
+                                        <td>0,16</td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <a id="mostrarResumo5" href="javascript:detalhar('5');"> Detalhar</a>
+                                        </td>
+                                        <td>OUTROS</td>
+                                        <td>13</td>
+                                        <td>29,00</td>
+                                        <td>50,000</td>
+                                        <td>1.450,00</td>
+                                        <td>0,16</td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <a id="mostrarResumo5" href="javascript:detalhar('5');"> Detalhar</a>
+                                        </td>
+                                        <td>OUTROS</td>
+                                        <td>13</td>
+                                        <td>29,00</td>
+                                        <td>50,000</td>
+                                        <td>1.450,00</td>
+                                        <td>0,16</td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <a id="mostrarResumo5" href="javascript:detalhar('5');"> Detalhar</a>
+                                        </td>
+                                        <td>OUTROS</td>
+                                        <td>13</td>
+                                        <td>29,00</td>
+                                        <td>50,000</td>
+                                        <td>1.450,00</td>
+                                        <td>0,16</td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <a id="mostrarResumo5" href="javascript:detalhar('5');"> Detalhar</a>
+                                        </td>
+                                        <td>OUTROS</td>
+                                        <td>13</td>
+                                        <td>29,00</td>
+                                        <td>50,000</td>
+                                        <td>1.450,00</td>
+                                        <td>0,16</td>
+                                    </tr><tr>
+                                        <td>
+                                            <a id="mostrarResumo5" href="javascript:detalhar('5');"> Detalhar</a>
+                                        </td>
+                                        <td>OUTROS</td>
+                                        <td>13</td>
+                                        <td>29,00</td>
+                                        <td>50,000</td>
+                                        <td>1.450,00</td>
+                                        <td>0,16</td>
+                                    </tr><tr>
+                                        <td>
+                                            <a id="mostrarResumo5" href="javascript:detalhar('5');"> Detalhar</a>
+                                        </td>
+                                        <td>OUTROS</td>
+                                        <td>13</td>
+                                        <td>29,00</td>
+                                        <td>50,000</td>
+                                        <td>1.450,00</td>
+                                        <td>0,16</td>
+                                    </tr><tr>
+                                        <td>
+                                            <a id="mostrarResumo5" href="javascript:detalhar('5');"> Detalhar</a>
+                                        </td>
+                                        <td>OUTROS</td>
+                                        <td>13</td>
+                                        <td>29,00</td>
+                                        <td>50,000</td>
+                                        <td>1.450,00</td>
+                                        <td>0,16</td>
+                                    </tr><tr>
+                                        <td>
+                                            <a id="mostrarResumo5" href="javascript:detalhar('5');"> Detalhar</a>
+                                        </td>
+                                        <td>OUTROS</td>
+                                        <td>13</td>
+                                        <td>29,00</td>
+                                        <td>50,000</td>
+                                        <td>1.450,00</td>
+                                        <td>0,16</td>
+                                    </tr><tr>
+                                        <td>
+                                            <a id="mostrarResumo5" href="javascript:detalhar('5');"> Detalhar</a>
+                                        </td>
+                                        <td>OUTROS</td>
+                                        <td>13</td>
+                                        <td>29,00</td>
+                                        <td>50,000</td>
+                                        <td>1.450,00</td>
+                                        <td>0,16</td>
+                                    </tr><tr>
+                                        <td>
+                                            <a id="mostrarResumo5" href="javascript:detalhar('5');"> Detalhar</a>
+                                        </td>
+                                        <td>OUTROS</td>
+                                        <td>13</td>
+                                        <td>29,00</td>
+                                        <td>50,000</td>
+                                        <td>1.450,00</td>
+                                        <td>0,16</td>
+                                    </tr>
+                                    <tr class="bg-sub-tijuca">
+                                        <td colspan="2">TOTAL GERAL</td>
+                                        <td>29</td>
+                                        <td>151.311,00</td>
+                                        <td>6,057</td>
+                                        <td>916.520,32</td>
+                                        <td>100,00</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js" integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ" crossorigin="anonymous"></script>
 </body>
 </html>

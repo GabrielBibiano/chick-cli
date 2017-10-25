@@ -91,7 +91,7 @@ exports.displayConfig = () => {
             const subModulos = Object.keys( sub.subModules )
             
             subModulos.forEach( sub => {
-                logSubmodules += `\n \t \t \t    | --  ${ sub } `
+                logSubmodules += `\n \t \t \t     | -- ${ sub } `
             })
 
             log += `\n \t \t \t| -- ${ item } ${ logSubmodules } `

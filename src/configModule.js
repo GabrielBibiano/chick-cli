@@ -14,11 +14,9 @@ const createConfigModuleFile = ( configModule ) => {
     return new Promise( ( resolve, reject ) => {
         const param = JSON.stringify(configModule)
         fs.writeFile(`${configModule.nome}/tijucli-module.json`, param, (err) => {
-            if (err) {
-                reject( logError( err ) )
-            }else{
-                resolve( logSuccess( 'Configurações salvas!' ) )
-            }
+            ( err ) 
+                ? reject( logError( err ) )
+                : resolve( logSuccess( 'Configurações salvas!' ) )
         });
     }) 
 }
@@ -27,8 +25,9 @@ const reWriteConfigModuleFile = (configModule) => {
     return new Promise((resolve, reject) => {
         const param = JSON.stringify(configModule)
         fs.writeFile(`tijucli-module.json`, JSON.stringify(configModule), (err) => {
-            if (err) reject(logError(err));
-            resolve(logSuccess('Configurações salvas!'))
+            ( err ) 
+                ? reject( logError( err ) )
+                : resolve( logSuccess( 'Configurações salvas!' ) )
         });
     }) 
 }
@@ -36,21 +35,20 @@ const reWriteConfigModuleFile = (configModule) => {
 const verifyConfigFile = () => {
     return new Promise( ( resolve, reject ) => {
         fs.open('./tijucli-module.json', 'r', (err) => {
-            if (err) {
-                reject(err) 
-            }else{
-                resolve(true)
-            }
+            ( err ) 
+                ? reject(err) 
+                : resolve(true)
         })
     })
 }
 
 const readConfigModuleFile = ( dir = '' ) => {
     return new Promise( ( resolve, reject ) => {
-        if(dir !== '') dir = dir + '/'
-        fs.readFile(`${dir}tijucli-module.json`, (err, data) => {
-            if (err) reject(logError(err));
-            resolve( JSON.parse( data ) )
+        if( dir !== '' ) dir = dir + '/'
+        fs.readFile(`${dir}tijucli-module.json`, ( err, data ) => {
+            ( err ) 
+                ? reject( logError( err ) )
+                : resolve( JSON.parse( data ) )
         });
     }) 
 }
@@ -59,7 +57,7 @@ const addModuleInConfigFile = async ( name ) => {
     let dataConfig = await readConfigModuleFile()
     dataConfig.subModules[ name ] = new Date()
     
-    reWriteConfigModuleFile(dataConfig)
+    reWriteConfigModuleFile( dataConfig )
 }
 
 module.exports = {

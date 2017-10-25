@@ -6,16 +6,18 @@ const { bgWhite } = require('./colorsVariables')
 
 const capitalize = ( str ) => str.charAt( 0 ).toUpperCase() + str.slice( 1 )
 
-const requireDefaultTemplateByType = (type = '') => {
+const requireDefaultTemplateByType = ( type = '' ) => {
     let typeCap;
-    if(type != '') typeCap = capitalize(type)
-    let fileTemplate = `${__dirname}/defaultModuleFiles/default${typeCap}.html`
+    ( type != '' ) 
+        ? typeCap = capitalize( type )
+        : typeCap = ''
 
-    return new Promise ((resolve, reject) => {
-        fs.readFile(fileTemplate, (err, data) => {
+    let fileTemplate = `${__dirname}/defaultModuleFiles/default${ typeCap }.html`
+    return new Promise( ( resolve, reject ) => {
+        fs.readFile( fileTemplate, ( err, data ) => {
             if (err) {
                 if (err.code === 'ENOENT') {
-                    reject(`Por favor, escolha um tipo de template válido \nO template ${bgWhite(type)} não existe.`) 
+                    reject(`Por favor, escolha um tipo de template válido \nO template ${ bgWhite(type) } não existe.`) 
                 }
             }else{
                 resolve(data)
